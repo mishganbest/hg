@@ -1,0 +1,150 @@
+<modification>
+    <id>Микроданные Schema.org для карточки товра</id>
+    <version>1.0</version>
+    <vqmver>2.1.3</vqmver>
+    <author>made by zubovd</author>
+	<file name="/catalog/controller/product/product.php">
+		<operation>
+			<search position="after">
+			<![CDATA[
+				$this->load->model('tool/image');
+			]]>
+			</search>
+			<add>
+			<![CDATA[
+				$this->data['quantity'] = $product_info['quantity'];
+				$this->data['review_count'] = $product_info['reviews'];
+				$this->data['currency'] = $this->currency->getCode();
+			]]>
+			</add>
+		</operation>
+	</file>
+	<file name="catalog/view/theme/*/template/product/product.tpl">
+        <operation>
+            <search position="replace">
+			<![CDATA[
+                <div class="review">
+            ]]>
+			</search>
+            <add>
+			<![CDATA[
+				<div class="review" itemprop = "aggregateRating" itemscope itemtype = "http://schema.org/AggregateRating">
+				<meta itemprop = "reviewCount" content="<?php echo $review_count; ?>">
+				<meta itemprop = "ratingValue" content="<?php echo $rating; ?>">
+            ]]>
+			</add>
+        </operation>
+
+        <operation>
+            <search position="replace">
+			<![CDATA[
+                <div id="tab-description" class="tab-content">
+            ]]>
+			</search>
+            <add>
+			<![CDATA[
+				<div itemprop="description" id="tab-description" class="tab-content">
+            ]]>
+			</add>
+        </operation>
+
+        <operation>
+            <search position="replace">
+			<![CDATA[
+                <div id="content">
+            ]]>
+			</search>
+            <add>
+			<![CDATA[
+				<div itemscope itemtype="http://schema.org/Product" id="content">
+            ]]>
+			</add>
+        </operation>
+
+        <operation>
+            <search position="replace">
+			<![CDATA[
+				<div class="breadcrumb">
+            ]]>
+			</search>
+            <add>
+			<![CDATA[
+				<div class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+            ]]>
+			</add>
+        </operation>
+
+        <operation>
+            <search position="replace">
+			<![CDATA[
+				<a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a>
+            ]]>
+			</search>
+            <add>
+			<![CDATA[
+				<span typeof="v:Breadcrumb">
+					<a href="<?php echo $breadcrumb['href']; ?>" rel="v:url" property="v:title"><?php echo $breadcrumb['text']; ?></a>
+				</span>
+            ]]>
+			</add>
+        </operation>
+
+        <operation>
+            <search position="replace">
+			<![CDATA[
+				<h1><?php echo $heading_title; ?></h1>
+            ]]>
+			</search>
+            <add>
+			<![CDATA[
+				<h1 itemprop="name"><?php echo $heading_title; ?></h1>
+				<meta itemprop="model" content="<?php echo $model; ?>" >
+				<meta itemprop="manufacturer" content="<?php echo $manufacturer; ?>" >
+				<meta itemprop="url" content="<?php echo $breadcrumb['href']; ?>" >
+            ]]>
+			</add>
+        </operation>
+
+        <operation>
+            <search position="replace" index="1">
+			<![CDATA[
+				<div class="price">
+            ]]>
+			</search>
+            <add>
+			<![CDATA[
+				<div itemprop = "offers" itemscope itemtype = "http://schema.org/Offer" class="price">
+				<meta itemprop="price" content="<?php echo ($special ? $special : $price); ?>" />
+				<meta itemprop="priceCurrency" content="<?php echo $currency; ?>" />
+				<link itemprop = "availability" href = "http://schema.org/<?php echo (($quantity > 0) ? "InStock" : "OutOfStock") ?>" />
+            ]]>
+			</add>
+        </operation>
+
+        <operation>
+            <search position="replace">
+			<![CDATA[
+				src="<?php echo $thumb; ?>"
+            ]]>
+			</search>
+            <add>
+			<![CDATA[
+				src="<?php echo $thumb; ?>" itemprop="image"
+            ]]>
+			</add>
+        </operation>
+
+        <operation>
+            <search position="replace">
+			<![CDATA[
+				src="<?php echo $image['thumb']; ?>"
+            ]]>
+			</search>
+            <add>
+			<![CDATA[
+				src="<?php echo $image['thumb']; ?>" itemprop="image"
+            ]]>
+			</add>
+        </operation>
+    </file>
+</modification>

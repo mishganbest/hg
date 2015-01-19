@@ -1,0 +1,182 @@
+<style type="text/css">
+
+#recall_form {
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 0 2px 13px rgba(0, 0, 0, 0.5);
+    display: none;
+    left: 50%;
+    padding: 0;
+    position: fixed;
+    top: 50%;
+    width: 380px;
+    z-index: 99999;
+}
+.green_big_title {
+    color: #FFFFFF;
+    font-family: tahoma;
+    font-size: 16px;
+    font-style: normal;
+    line-height: 25px;
+}
+.recall_header {
+    background: none repeat scroll 0 0 #585858;
+    margin: 7px;
+    width: 360px;
+}
+
+.recall_header {
+    cursor: move;
+}
+
+.recall_input {
+    width: 210px;
+}
+.success_block {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 4px 4px 4px 4px;
+    margin: 20px 10px;
+}
+.form_table_recall .input_error{
+	border-color: #000000;
+}
+
+.error_message {
+    color: #7A0404;
+    /*display: block;*/
+    font-family: tahoma;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 11px;
+    padding: 10px 10px 10px 0;
+	display: none;
+}
+</style>
+
+<div id="recall_form" class="ui-draggable" style="border-radius: 10px 10px 10px 10px; display: none;">
+
+	<table cellpadding="0" border="0" class="recall_header " colspan="0" style="border-radius: 5px 5px 5px 5px;">
+		<tbody><tr>
+			<td valign="center" align="center">
+				<div class="green_big_title"><?php echo $text_recall?></div>
+			</td>
+			<td valign="center" align="right">
+				<a onclick="recall_close();" class="recall_close" href="javascript:void(0);"><img title="<?php echo $close_window?>" src="catalog/view/theme/default/image/cancel.png"></a>
+			</td>
+		</tr>
+	</tbody></table>
+
+	<div id="recall_message2" style="display:none;" class="error_block">
+		<span id="recall_message" class="error_message" style="text-align:center"></span>
+	</div>
+
+	<div style="display:none;" id="recall_success" class="success_block">
+		<span class="success_message" style="text-align:center">
+			<?php echo $text_success?>
+		</span>
+	</div>
+
+	<form id="recall_ajax_form" onsubmit="return recall_ajax();" method="POST">
+		<input type="hidden" value="yes" name="recall">
+		<table cellspacing="5" class="form_table_recall">
+			<tbody>
+				<?php if ($show_name) { ?>
+			<tr>
+				<td class="td_recall_caption"><?php if( $required_name ) {?><span class="required">*</span>&nbsp;<?php } ?><?php echo $text_name?></td>
+				<td colspan="2"><input type="text" class="recall_input" value="" id="user_name" name="user_name"><div id="user_name_error" class="error_message"></div></td>
+			</tr>
+				<?php } ?>
+			<tr>
+				<td class="td_recall_caption"><?php if( $required_phone ) {?><span class="required">*</span>&nbsp;<?php } ?><?php echo $text_phone?></td>
+				<td colspan="2"><input type="text" class="recall_input" value="" id="user_phone" name="user_phone"><div id="user_phone_error" class="error_message"></div></td>
+			</tr>
+			<?php if ($show_email) { ?>
+			<tr>
+				<td class="td_recall_caption"><?php if( $required_email ) {?><span class="required">*</span>&nbsp;<?php } ?><?php echo $text_email?></td>
+				<td colspan="2"><input type="text" class="recall_input" value="" id="user_email" name="user_email"><div id="user_email_error" class="error_message"></div></td>
+			</tr>
+				<?php } ?>
+			<?php if ($show_time) { ?>
+			<tr>
+				<td class="td_recall_caption"><?php if( $required_time ) {?><span class="required">*</span>&nbsp;<?php } ?><?php echo $text_time?></td>
+				<td colspan="2"><input type="text" class="recall_input" value="" id="recommend_to_call" name="recommend_to_call"><div id="recommend_to_call_error" class="error_message"></div></td>
+			</tr>
+				<?php } ?>
+			<?php if ($show_comment) { ?>
+			<tr>
+				<td class="td_recall_caption"><?php if( $required_comment ) {?><span class="required">*</span>&nbsp;<?php } ?><?php echo $text_comment?></td>
+				<td colspan="2"><textarea class="recall_input" rows="5" cols="20" id="user_comment" name="user_comment"></textarea><div id="user_comment_error" class="error_message"></div></td>
+			</tr>
+				<?php } ?>
+			<tr>
+			<td align="center" colspan="3">
+				<img style="display:none;" id="load_recall" src="catalog/view/theme/default/image/loading.gif">
+				<button id="submit_recall" type="submit"><?php echo $text_request?></button>
+			</td>
+		</tr>
+		</tbody></table>
+	</form>
+</div>
+<script>
+	function recall_close(){
+		$('#recall_form').hide();
+		return false;
+	}
+
+	function recall_show(){
+        margin_top = -$('#recall_form').height()/2;
+        margin_left= -$('#recall_form').width()/2;
+        $('#recall_form').css({'margin-left': margin_left, 'margin-top': margin_top });
+		$('#recall_form').show();
+
+		$('#recall_ajax_form').show();
+		$('#recall_success').hide();
+
+		$('#user_name').val('');
+		$('#user_phone').val('');
+		$('#recommend_to_call').val('');
+		$('#user_comment').val('');
+		$('#recall_code').val('');
+		return false;
+	}
+
+	function show_message_recall(id_message, message){
+		$('#'+id_message+'_error').html(message).show();
+		$("#"+id_message).focus();
+		$("#"+id_message).addClass('input_error');
+		return false;
+	}
+
+	function recall_ajax(){
+		var vars = $('#recall_ajax_form').serialize();
+		$('#load_recall').show();
+		$('#submit_recall').hide();
+		$.ajax({
+			type: "POST",
+			data: 'recall=yes&'+vars,
+			url:'index.php?route=module/recall/ajax',
+			dataType:'json',
+			success: function(json){
+				$('#load_recall').hide();
+				$('#submit_recall').show();
+				$('.recall_input').removeClass('input_error');
+				$('.error_message').html('').hide();
+				switch (json['result']) {
+					case 'success':
+						$('#recall_message2').hide();
+						$('#recall_ajax_form').hide();
+						$('#recall_success').show();
+					break;
+					case 'error':
+					    $.each(json['errors'], 
+						function(index, value){
+							show_message_recall(index, value);
+						});
+
+					break;
+				}
+			}
+			});
+		return false;
+	}
+</script>

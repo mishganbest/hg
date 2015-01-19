@@ -1,0 +1,52 @@
+<modification>
+        <id>OpenCart Yandex CPA integration</id>
+        <version>1.1</version>
+        <vqmver>1</vqmver>
+        <author>Alexander Toporkov (toporchillo@gmail.com)</author>
+
+        <file name="admin/model/sale/order.php">
+		<operation>
+			<search regex="true" position="after"><![CDATA[~\'order_id\'\s*=>\s*\$order_query->row\[\'order_id\'\]~i]]></search>
+			<add><![CDATA[
+				'yaorder_id'              => $order_query->row['yaorder_id'],
+			]]></add>
+		</operation>
+	</file>
+	<file name="admin/controller/sale/order.php">
+		<operation>
+			<search position="before"><![CDATA[$this->data['ip'] = $order_info['ip'];]]></search>
+			<add><![CDATA[
+			$this->data['yaorder_id'] = $order_info['yaorder_id'];
+			$this->data['yabuy_yacompany'] = $this->config->get('yabuy_yacompany');
+			$this->data['yabuy_login'] = $this->config->get('yabuy_login');
+			]]></add>
+		</operation>
+	</file>
+	<file name="admin/view/template/sale/order_info.tpl">
+			<operation>
+				<search position="after"><![CDATA[<?php echo $button_add_history; ?></a></div>]]></search>
+				<add><![CDATA[
+	<?php if ($yaorder_id) { ?>
+            </td>
+          </tr>		  
+          <tr>
+            <td><b>Заказ на Яндекс.Маркет</b></td>
+		    <td>
+		<iframe style="width: 100%;" height="350" src="http://sourcedistillery.com/yabuy/index.php?company_id=<?php echo $yabuy_yacompany; ?>&login=<?php echo $yabuy_login; ?>&ya_order=<?php echo $yaorder_id; ?>">
+		</iframe>
+	<?php } ?>
+				]]></add>
+			</operation>
+	</file>
+
+	<file name="catalog/controller/common/seo_pro.php" error="skip">
+		<operation>
+			<search position="after"><![CDATA[private function validate() {]]></search>
+			<add><![CDATA[
+		if (isset($this->request->get['route']) && substr($this->request->get['route'], 0, 9) == 'yandexbuy') {
+			return;
+		}
+			]]></add>
+		</operation>
+	</file>
+</modification>

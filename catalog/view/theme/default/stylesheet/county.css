@@ -1,0 +1,46 @@
+
+.county-days-wrapper, .county-hours-wrapper, .county-minutes-wrapper, .county-seconds-wrapper
+{
+    overflow: hidden !important;
+    position: relative !important;
+    display: inline-block !important;
+}
+.county > span > span
+{
+    display: block;
+}
+.county-label-days, .county-label-hours, .county-label-minutes, .county-label-seconds
+{
+    font-size: 12px !important;
+    line-height: 18px !important;
+    height: 18px !important;
+    text-align: center !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    padding-top: 12px;
+    background-color: transparent !important;
+}
+
+.clear
+{
+    clear: both;
+}
+/*color schemes*/
+/*black*/
+.county.black .county-days-wrapper, .county.black .county-hours-wrapper, .county.black .county-minutes-wrapper, .county.black .county-seconds-wrapper
+{
+    	color:#fff;
+	text-align:center;
+	line-height:54px;
+	font-size:36px;
+	font-weight:bold;
+	height:54px;
+	float:left;
+	margin: 10px 7px 0 10px;
+	width:63px;
+	background:url('../image/retime.png') no-repeat;
+}
+.county.black .county-label-days, .county.black .county-label-hours, .county.black .county-label-minutes, .county.black .county-label-seconds
+{
+    color: #ffffff;
+}

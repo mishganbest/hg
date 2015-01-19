@@ -1,0 +1,18 @@
+<modification>
+    <id>Price Free For Zero Amount</id>
+      <version>1.0</version>
+		   <vqmver>2.1.7</vqmver>
+       <author>www.best-byte.com</author>		
+
+<file name="system/library/currency.php">
+    <operation>
+			<search position="before"><![CDATA[$string = '';]]></search>
+			<add><![CDATA[
+      if ($format && (float)$value == -1) {
+			return 'Звоните';
+		  }
+   ]]></add>
+	</operation>
+</file>		
+
+</modification>

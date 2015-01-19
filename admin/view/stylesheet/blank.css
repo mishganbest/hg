@@ -1,0 +1,88 @@
+body {
+	background: #FFFFFF;
+}
+body, td, th, input, select, textarea, option, optgroup {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000;
+}
+.block {
+	width: 540px;
+	margin: 0 auto;
+	padding-bottom: 40px;
+}
+input {
+	width: 100%;
+	background: none;
+	border: none;
+	text-align: center;
+}
+.header {
+	display: inline-block;
+	text-transform: uppercase;
+	color: #000000;
+	text-align: center;
+	font-size: 14px;
+	font-weight: bold;
+	padding-right: 50px;
+	margin: 10px 0 20px 185px;
+	vertical-align: bottom;
+}
+.date {
+	display: inline-block;
+	font-size: 12px;
+	padding-left: 0px;
+	margin: 13px 0 20px 0;
+}
+.date span {
+	color: #000000;
+	font-size: 11px;
+	font-weight: normal;
+}
+.store {
+	width: 100%;
+	margin-bottom: 20px;
+}
+.store span {
+	line-height: 20px;
+	font-size: 12px;
+	font-family: Times New Roman, Arial, Helvetica, sans-serif;
+}
+.heading td {
+	background: #EDEDED;
+	font-style: italic;
+	font-family: Times New Roman, Arial, Helvetica, sans-serif;
+	height: 37px;
+}
+.product {
+	width: 100%;
+	margin-bottom: 20px;
+	border-top: 1px solid #333333;
+	border-right: 1px solid #333333;
+	border-collapse: collapse;
+}
+.product td {
+	border-left: 1px solid #333333;
+	border-bottom: 1px solid #333333;
+	padding: 3px 5px;
+	text-align: center;
+}
+.product td.number input {
+	font-family: Arial, Helvetica, sans-serif;
+}
+.product td input {
+	font-family: Times New Roman, Arial, Helvetica, sans-serif;
+}
+.bottom {
+	width: 100%;
+	margin-top: 22px;
+	margin-bottom: 20px;
+}
+.bottom b {
+	font-size: 13px;
+}
+.bottom input {
+	width: 325px; 
+	font-weight: bold;
+	text-align: left;
+}

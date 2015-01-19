@@ -1,0 +1,28 @@
+
+/* List and Form */
+form#testimonial input { width: 200px; margin-bottom: 7px }
+form#testimonial textarea { width: 500px; margin-bottom: 10px }
+.testimonials { text-align: left }
+.testimonial_block .video { background: url('/catalog/view/theme/default/image/play.png') no-repeat; position: absolute; width: 32px; height: 32px; margin: 28px 0 0 40px }
+.testimonial_block img { margin: 0 15px 5px 0; border: 1px solid #ddd; padding: 5px }
+.testimonials .testimonial_block { clear: both; padding: 15px 0 10px 0; margin: 10px 0; border-bottom: 1px solid #ddd; overflow: hidden }
+.testimonials .testimonial_block .thumb { float: left; height: 100% }
+.testimonials .middle { position: relative; margin-left: 130px; text-align: justify; line-height: 18px; font-size: 14px; font-style: italic; padding-bottom: 5px }
+.testimonials .middle_nothumb { position: relative; margin-left: 0px; text-align: justify; line-height: 18px; font-size: 14px; font-style: italic; padding-bottom: 5px }
+.testimonials .middle-bottom { text-align: right; padding-bottom: 5px }
+.testimonials .middle-bottom .audio { float: left; position: absolute; margin-left: 10px; padding-top: 5px }
+.testimonials .middle-bottom .audio2 { float: left; position: absolute; margin-left: 130px; padding-top: 5px }
+.testimonials .middle-bottom .info { display: inline-block; text-align: right }
+.testimonials .middle-bottom .info a { text-decoration: none; font-size: 11px; color: #000 }
+.testimonials .middle-bottom .info a:hover { text-decoration: underline; font-size: 11px; color: #38B0E3 }
+.testimonials .middle-bottom span { display: block; font-size: 11px; font-weight: bold }
+
+/* Module */
+.testimonial_module { line-height: 15px; text-align: left }
+.testimonial_module .thumb { float: left }
+.testimonial_module .iframe { float: left }
+.testimonial_module .video { background: url('/catalog/view/theme/default/image/play_m.png') no-repeat; position: absolute; width: 20px; height: 20px; margin: 23px 0 0 35px }
+.testimonial_module img { margin-right: 7px; border: 1px solid #ddd; padding: 3px }
+.testimonial_module .bottom { width: 97%; overflow: hidden; text-align: left; margin-bottom: 10px; padding: 10px 0; border-bottom: dotted silver 1px }
+.testimonial_module .bottom span { font-size: 11px; color: #555; font-family: Tahoma; font-weight: bold; float: right; margin-right: 5px; }
+.testimonial_module .bottom_links { display: block; font-weight: bold; text-align: center }

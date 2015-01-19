@@ -1,0 +1,130 @@
+<?php
+
+class ModelShippingCourier extends Model {
+
+    function getQuote($address) {
+        $this->load->language('shipping/courier');
+        $this->load->model('module/geo');
+		
+		$city = $this->model_module_geo->smarty_function_get_city();
+
+                 $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int) $this->config->get('courier_geo_zone_id') . "' AND country_id = '" . (int) $address['country_id'] . "' AND (zone_id = '" . (int) $address['zone_id'] . "' OR zone_id = '0')");
+
+            if (!$this->config->get('courier_geo_zone_id')) {
+                $status = true;
+            } elseif ($query->num_rows) {
+                $status = true;
+         
+        } else {
+            $status = false;
+        }
+
+        $method_data = array();
+
+        if ($status) {
+            $quote_data = array();
+
+            $cost = 0.00;
+            
+        if ($city == 'Новосибирск') {
+               $shtitlea = $this->language->get('text_description_zone1_after');
+               $shtitleb = $this->language->get('text_description_zone1_before');
+               $shipcosta = $this->config->get('courier_delivery_price_zone1_after');
+               $shipcostb = $this->config->get('courier_delivery_price_zone1_before');
+        } else {
+               $shtitlea = $this->language->get('text_description_zone7_after');
+               $shtitleb = $this->language->get('text_description_zone7_before');
+               $shipcosta = $this->config->get('courier_delivery_price_zone7_after');
+               $shipcostb = $this->config->get('courier_delivery_price_zone7_before');
+        }
+            
+            if ($this->config->get('courier_min_total_for_change_cost') > $this->cart->getSubTotal()) {
+					 $quote_data['zone1b'] = array(
+						 'code' => 'courier.zone1b',
+						 'title' => $shtitleb,
+						 'cost' => $shipcostb,
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone1_before'))
+					 );
+					  $quote_data['zone2b'] = array(
+						 'code' => 'courier.zone2b',
+						 'title' => $this->language->get('text_description_zone2_before'),
+						 'cost' => $this->config->get('courier_delivery_price_zone2_before'),
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone2_before'))
+					 );
+					  $quote_data['zone3b'] = array(
+						 'code' => 'courier.zone3b',
+						 'title' => $this->language->get('text_description_zone3_before'),
+						 'cost' => $this->config->get('courier_delivery_price_zone3_before'),
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone3_before'))
+					 );
+					  $quote_data['zone4b'] = array(
+						 'code' => 'courier.zone4b',
+						 'title' => $this->language->get('text_description_zone4_before'),
+						 'cost' => $this->config->get('courier_delivery_price_zone4_before'),
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone4_before'))
+					 );
+					  $quote_data['zone5b'] = array(
+						 'code' => 'courier.zone5b',
+						 'title' => $this->language->get('text_description_zone5_before'),
+						 'cost' => $this->config->get('courier_delivery_price_zone5_before'),
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone5_before'))
+					 );
+		}	else {
+						 $quote_data['zone1a'] = array(
+						 'code' => 'courier.zone1a',
+						 'title' => $shtitlea,
+						 'cost' => $shipcosta,
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone1_after'))
+					 );
+					  $quote_data['zone2a'] = array(
+						 'code' => 'courier.zone2a',
+						 'title' => $this->language->get('text_description_zone2_after'),
+						 'cost' => $this->config->get('courier_delivery_price_zone2_after'),
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone2_after'))
+					 );
+					  $quote_data['zone3a'] = array(
+						 'code' => 'courier.zone3a',
+						 'title' => $this->language->get('text_description_zone3_after'),
+						 'cost' => $this->config->get('courier_delivery_price_zone3_after'),
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone3_after'))
+					 );
+					  $quote_data['zone4a'] = array(
+						 'code' => 'courier.zone4a',
+						 'title' => $this->language->get('text_description_zone4_after'),
+						 'cost' => $this->config->get('courier_delivery_price_zone4_after'),
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone4_after'))
+					 );
+					  $quote_data['zone5a'] = array(
+						 'code' => 'courier.zone5a',
+						 'title' => $this->language->get('text_description_zone5_after'),
+						 'cost' => $this->config->get('courier_delivery_price_zone5_after'),
+						 'tax_class_id' => 0,
+						 'text' => $this->currency->format($this->config->get('courier_delivery_price_zone5_after'))
+					 );
+				}
+
+       
+            $method_data = array(
+                'code' => 'courier',
+                'title' => $this->language->get('text_title'),
+                'quote' => $quote_data,
+                'sort_order' => $this->config->get('courier_sort_order'),
+                'error' => false
+            );
+        }
+
+        return $method_data;
+    }
+
+}
+
+?>

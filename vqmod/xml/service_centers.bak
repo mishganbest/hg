@@ -1,0 +1,143 @@
+<modification>
+	<id>Service Centers</id>
+	<version>1.0.0</version>
+	<vqmver>2.3.0</vqmver>
+	<author>Alex</author>
+	<file name="admin/controller/catalog/product.php">
+		<operation error="abort">
+			<search position="after"><![CDATA[$this->data['entry_stock_status'] = $this->language->get('entry_stock_status');]]></search>
+			<add><![CDATA[$this->data['entry_service_center'] = $this->language->get('entry_service_center');]]></add>
+		</operation>
+		<operation error="abort">
+			<search position="after" offset="1"><![CDATA[$this->data['stock_status_id'] = $this->config->get('config_stock_status_id');]]></search>
+			<add><![CDATA[$this->load->model('localisation/service_center');
+		
+		$this->data['service_centers'] = $this->model_localisation_service_center->getServiceCenters();
+    	
+		if (isset($this->request->post['service_center_id'])) {
+      		$this->data['service_center_id'] = $this->request->post['service_center_id'];
+    	} elseif (!empty($product_info)) {
+      		$this->data['service_center_id'] = $product_info['service_center_id'];
+    	} else {
+      		$this->data['service_center_id'] = '';
+    	}]]></add>
+		</operation>
+	</file>
+	<file name="admin/language/russian/catalog/product.php">
+		<operation error="abort">
+			<search position="before"><![CDATA[$_['entry_stock_status']]]></search>
+			<add><![CDATA[$_['entry_service_center']     = 'Сервисный центр:';
+]]></add>
+		</operation>
+	</file>
+	<file name="admin/model/catalog/product.php">
+		<operation error="abort">
+			<search position="replace"><![CDATA[stock_status_id = '" . (int)$data['stock_status_id'] . "',]]></search>
+			<add><![CDATA[stock_status_id = '" . (int)$data['stock_status_id'] . "', service_center_id = '" . (int)$data['service_center_id'] . "', ]]></add>
+		</operation>
+		<operation error="abort">
+			<search position="before"><![CDATA[public function getTotalProductsByWeightClassId($weight_class_id) {]]></search>
+			<add><![CDATA[public function getTotalProductsByServiceCenterId($service_center_id) {
+		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "product WHERE service_center_id = '" . (int)$service_center_id . "'");
+
+		return $query->row['total'];
+	}]]></add>
+		</operation>
+	</file>
+	<file name="admin/view/template/catalog/product_form.tpl">
+		<operation error="abort">
+			<search position="before" offset="1"><![CDATA[<td><?php echo $entry_shipping; ?></td>]]></search>
+			<add><![CDATA[<tr>
+              <td><?php echo $entry_service_center; ?></td>
+              <td><select name="service_center_id">
+              	  <option value="0"><?php echo $text_none; ?></option>
+                  <?php foreach ($service_centers as $service_center) { ?>
+                  <?php if ($service_center['service_center_id'] == $service_center_id) { ?>
+                  <option value="<?php echo $service_center['service_center_id']; ?>" selected="selected"><?php echo $service_center['name']; ?></option>
+                  <?php } else { ?>
+                  <option value="<?php echo $service_center['service_center_id']; ?>"><?php echo $service_center['name']; ?></option>
+                  <?php } ?>
+                  <?php } ?>
+                </select></td>
+            </tr>]]></add>
+		</operation>
+	</file>
+	<file name="admin/controller/common/header.php">
+		<operation error="abort">
+			<search position="after"><![CDATA[$this->data['text_stock_status'] = $this->language->get('text_stock_status');]]></search>
+			<add><![CDATA[$this->data['text_service_center'] = $this->language->get('text_service_center');]]></add>
+		</operation>
+		<operation error="abort">
+			<search position="after"><![CDATA[$this->data['stock_status'] = $this->url->link('localisation/stock_status', 'token=' . $this->session->data['token'], 'SSL');]]></search>
+			<add><![CDATA[$this->data['service_center'] = $this->url->link('localisation/service_center', 'token=' . $this->session->data['token'], 'SSL');]]></add>
+		</operation>
+	</file>
+	<file name="admin/language/russian/common/header.php">
+		<operation error="abort">
+			<search position="before"><![CDATA[$_['text_setting']]]></search>
+			<add><![CDATA[$_['text_service_center']                = 'Сервисные центры';]]></add>
+		</operation>
+	</file>
+	<file name="admin/view/template/common/header.tpl">
+		<operation error="abort">
+			<search position="after"><![CDATA[<li><a href="<?php echo $stock_status; ?>"><?php echo $text_stock_status; ?></a></li>]]></search>
+			<add><![CDATA[<li><a href="<?php echo $service_center; ?>"><?php echo $text_service_center; ?></a></li>]]></add>
+		</operation>
+	</file>
+	<file name="catalog/controller/product/product.php">
+		<operation error="abort">
+			<search position="after"><![CDATA[$this->data['text_tags'] = $this->language->get('text_tags');]]></search>
+			<add><![CDATA[$this->data['text_service_center'] = $this->language->get('text_service_center');]]></add>
+		</operation>
+		<operation error="abort">
+			<search position="before"><![CDATA[$this->data['options'] = array();]]></search>
+			<add><![CDATA[$service_centers = $this->model_catalog_product->getProductServiceCenter($this->request->get['product_id']);
+			
+			$this->data['service_centers'] = array(); 
+			
+			foreach ($service_centers as $service_center) {
+				$this->data['service_centers'][] = array(
+					'name' => $service_center['name'],
+					'address' => $service_center['address'],
+					'time' => $service_center['time'],
+					'phone' => $service_center['phone'],
+					'href' => $service_center['urlserviceinfo']
+				);
+			}]]></add>
+		</operation>
+	</file>
+	<file name="catalog/language/russian/product/product.php">
+		<operation error="abort">
+			<search position="before"><![CDATA[$_['text_qty']]]></search>
+			<add><![CDATA[$_['text_service_center']      = 'Сервисный центр:';]]></add>
+		</operation>
+	</file>
+	<file name="catalog/model/catalog/product.php">
+		<operation error="abort">
+			<search position="before"><![CDATA[public function getProductImages($product_id) {]]></search>
+			<add><![CDATA[public function getProductServiceCenter($product_id) {
+		
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "service_center sc LEFT JOIN " . DB_PREFIX . "product p ON (sc.service_center_id = p.service_center_id) WHERE product_id = '" . (int)$product_id . "' AND sc.service_center_id = p.service_center_id");
+
+		return $query->rows;		
+	}]]></add>
+		</operation>
+	</file>
+	<file name="catalog/view/theme/default/template/product/product.tpl">
+		<operation error="abort">
+			<search position="before" index="1"><![CDATA[<?php if ($review_status) { ?>]]></search>
+			<add><![CDATA[<?php if ($service_centers) { ?>
+        <div style="margin: -10px 0 10px 0">
+        <?php echo $text_service_center; ?>
+          <?php foreach ($service_centers as $service_center) { ?>
+          <?php if ($service_center['href']) { ?>
+          <a href="<?php echo $service_center['href']; ?>" target="_blank"><?php echo $service_center['name']; ?></a>
+          <?php } else { ?>
+          <span><?php echo $service_center['name']; ?></span>
+          <?php } ?>
+          <?php } ?>
+        </div>
+        <?php } ?>]]></add>
+		</operation>
+	</file>
+</modification>

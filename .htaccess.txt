@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_HOST} ^www.healthygoods.ru$ [NC]
+RewriteRule ^(.*)$ http://healthygoods.ru$1 [R=301,L]
